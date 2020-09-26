@@ -1,10 +1,8 @@
 #!/bin/bash
 
-sipInfo=("$(csrutil status)")
 systemVersion=($(sw_vers -productVersion | cut -d "." -f 2))
 systemLanguage=($(locale | grep LANG | sed s/'LANG='// | tr -d '"' | cut -d "." -f 1))
 
-disableSIP="Need to disable SIP"
 langRemoteMode="Remote Mode"
 langLocalMode="Local Mode"
 langDisplay="Display"
@@ -38,7 +36,6 @@ langChooseResOp5="(5) 3000x2000 Display"
 langChooseResOpCustom="(6) Manual input resolution"
 
 if [[ "${systemLanguage}" == "zh_CN" ]]; then 
-    disableSIP="需要关闭 SIP"
     langRemoteMode="远程模式"
     langLocalMode="本地模式"
     langDisplay="显示器"
@@ -83,13 +80,6 @@ if [ -d "${shellDir}/displayIcons" ];then
     downloadHost="file://${shellDir}"
 else
     echo $langRemoteMode
-fi
-
-if [[ "${sipInfo}" == *"Filesystem Protections: disabled"* ]] || [[ "$(awk '{print $5}' <<< "${sipInfo}")" == "disabled." ]] || [[ "$(awk '{print $5}' <<< "${sipInfo}")" == "disabled" ]]; then
-    :
-else
-    echo "${disableSIP}";
-    exit 0
 fi
 
 if [[ "${systemVersion}" -ge "15" ]]; then
@@ -184,8 +174,8 @@ EEF
     get_edid
 
     thisDir=$(dirname $0)
-    thatDir="/System/Library/Displays/Contents/Resources/Overrides"
-    Overrides="\/System\/Library\/Displays\/Contents\/Resources\/Overrides"
+    thatDir="/Library/Displays/Contents/Resources/Overrides"
+    Overrides="\/Library\/Displays\/Contents\/Resources\/Overrides"
     
     DICON="com\.apple\.cinema-display"
     imacicon=${Overrides}"\/DisplayVendorID\-610\/DisplayProductID\-a032\.tiff"
